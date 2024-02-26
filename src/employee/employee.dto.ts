@@ -1,5 +1,5 @@
-import { Prop } from "@nestjs/mongoose";
-import { IsEnum, IsNotEmpty, isNotEmpty } from "class-validator";
+
+import { IsEnum, IsNotEmpty } from "class-validator";
 
 export enum UserRole{
     ADMIN="ADMIN",
