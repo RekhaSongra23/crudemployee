@@ -1,10 +1,10 @@
-import { Module } from "@nestjs/common"
-import { JwtModule, JwtService } from "@nestjs/jwt"
-import { MongooseModule } from "@nestjs/mongoose"
-import { employee, employeeSchema } from "src/employee/employee.schema"
-import { authController } from "./auth.controller"
-import { authService } from "./auth.service"
-import { employeeModule } from "src/employee/employee.module"
+import { Module } from '@nestjs/common';
+import { JwtModule, JwtService } from '@nestjs/jwt';
+import { MongooseModule } from '@nestjs/mongoose';
+import { employee, employeeSchema } from 'src/employee/employee.schema';
+import { authController } from './auth.controller';
+import { authService } from './auth.service';
+import { employeeModule } from 'src/employee/employee.module';
 
 @Module({
   imports: [
@@ -14,10 +14,10 @@ import { employeeModule } from "src/employee/employee.module"
     employeeModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,
-      signOptions:{expiresIn:"2h"}
+      signOptions: { expiresIn: 20 },
     }),
   ],
-  controllers:[authController],
-  providers:[authService,JwtService]
+  controllers: [authController],
+  providers: [authService, JwtService],
 })
 export class authModule {}

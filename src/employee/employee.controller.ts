@@ -16,6 +16,7 @@ import mongoose from 'mongoose';
 import { UserRoles } from 'src/roles/roles.decorator';
 import { AuthGuard } from 'src/roles/authGuard';
 import { RoleGuard } from 'src/roles/role.guard';
+import { employeeUpdateDto } from './employeeUpdateDto';
 
 @UseGuards(AuthGuard, RoleGuard)
 @ApiBearerAuth()
@@ -28,7 +29,7 @@ export class employeeController {
     summary: 'Get All Employee ',
     description: 'You will get All employess',
   })
-  @ApiResponse({ status: 200, description: 'Employee Get sucessfully' })
+  @ApiResponse({ status: 200, description: 'Employee Get successfully' })
   @UserRoles(UserRole.ADMIN, UserRole.MANAGER, UserRole.DEVELOPER)
   @Get()
   async getAllemployee(): Promise<employee[]> {
@@ -66,10 +67,10 @@ export class employeeController {
   @Put(':id')
   async updateEmp(
     @Param('id') id: mongoose.Types.ObjectId,
-    @Body() employeeDto: employeeDto,
+    @Body() employeeUpdateDto: employeeUpdateDto,
   ) {
     try {
-      const emp4 = await this.employeeService.updateEmployee(id, employeeDto);
+      const emp4 = await this.employeeService.updateEmployee(id, employeeUpdateDto);
       return emp4;
     } catch (err) {
       throw new BadRequestException(err);

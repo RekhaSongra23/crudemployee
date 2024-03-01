@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
@@ -16,13 +20,26 @@ export class authService {
 
   async findUserName(username: string) {
     return await this.employeemodel.findOne({ username });
-  }
+  } 
 
-  async createEmployee(employeeDto: employeeDto): Promise<employee> {
-    const { username, password, jobrole, experience, role } = employeeDto;
+  async createuser(dto: employeeDto) {
+    const { username, password, jobrole, experience, role } = dto;
     const hashedpassword = await bcrypt.hash(password, 10);
-    const user = await this.employeemodel.create({ username, password: hashedpassword, jobrole, role, experience,});
-    return user;
+
+    const userdetails = await this.employeemodel.create({
+      username,
+      password: hashedpassword,
+      jobrole,
+      experience,
+      role,
+    });
+
+    const payload = { sub: userdetails.id, role: userdetails.role };
+    const acessToken = await this.jwtservice.sign(payload, {
+      secret: `${process.env.JWT_SECRET}`,
+    });
+
+    return { userdetails: userdetails, token: acessToken };
   }
 
   async login(username: string, password: string) {
@@ -32,9 +49,9 @@ export class authService {
     }
     const validpassword = await bcrypt.compare(password, empLogin.password);
     if (!validpassword) {
-      throw new NotFoundException('password not matched');
+      throw new UnauthorizedException('password not matched');
     }
-    const payload = {sub: empLogin.id, role: empLogin.role, };
+    const payload = { sub: empLogin.id, role: empLogin.role };
     const acessToken = await this.jwtservice.sign(payload, {
       secret: `${process.env.JWT_SECRET}`,
     });
