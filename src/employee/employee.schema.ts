@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { UserRole } from "./employee.dto";
 
 @Schema({ timestamps: true })
+
 export class employee {
   @Prop({ unique: true })
   username: string;

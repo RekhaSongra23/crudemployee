@@ -7,6 +7,7 @@ import { employeeDto } from "./employee.dto";
 @Injectable()
 export class employeeservice{
     constructor(@InjectModel (employee.name) private readonly employeemodel:mongoose.Model<employee>){}
+    
 
     async findEmployee():Promise<employee[]>{
         const empfind=await this.employeemodel.find();
