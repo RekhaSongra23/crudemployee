@@ -42,12 +42,14 @@ export class authService {
     return { userdetails: userdetails, token: acessToken };
   }
 
+  
+
   async login(username: string, password: string) {
     const empLogin = await this.findUserName(username);
     if (!empLogin) {
-      throw new NotFoundException('user not found');
+     throw new NotFoundException('User not found')
     }
-    const validpassword = await bcrypt.compare(password, empLogin.password);
+    const validpassword = await bcrypt.compare(password,empLogin.password);
     if (!validpassword) {
       throw new UnauthorizedException('password not matched');
     }

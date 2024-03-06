@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNotEmpty } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 import mongoose from 'mongoose';
 
 export enum UserRole {
@@ -8,10 +8,8 @@ export enum UserRole {
   DEVELOPER = 'DEVELOPER',
 }
 export class employeeDto {
+  id: mongoose.Types.ObjectId;
 
-  id:mongoose.Types.ObjectId;
-
-  
   @IsNotEmpty()
   @ApiProperty()
   username: string;
@@ -25,10 +23,11 @@ export class employeeDto {
   jobrole: string;
 
   @ApiProperty()
+  @IsString()
   @IsNotEmpty()
   experience: string;
 
   @ApiProperty({ enum: UserRole })
   @IsEnum(UserRole)
-  role: UserRole;
+  role:UserRole;
 }

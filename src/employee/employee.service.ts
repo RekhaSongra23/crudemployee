@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { employee } from './employee.schema';
 import mongoose from 'mongoose';
-import { employeeDto } from './employee.dto';
-import { employeeUpdateDto } from './employeeUpdateDto';
+import { employeeUpdateDto, updatepassDto } from './employeeUpdateDto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class employeeservice {
@@ -16,10 +16,12 @@ export class employeeservice {
     const empfind = await this.employeemodel.find({}, { password: 0 });
     return empfind;
   }
+
   async findEmployeeById(id: mongoose.Types.ObjectId): Promise<employee> {
     const empfindid = await this.employeemodel.findById(id);
     return empfindid;
   }
+
   async updateEmployee(
     id: mongoose.Types.ObjectId,
     employeeUpdateDto: employeeUpdateDto,
@@ -29,6 +31,32 @@ export class employeeservice {
       employeeUpdateDto,
     );
     return empupdate;
+  }
+
+  async updatePassword(
+    id: mongoose.Types.ObjectId,
+    updatepassDto: updatepassDto,
+  ): Promise<employee> {
+    const { password, confirmPassword } = updatepassDto;
+
+    if (password !== confirmPassword) {
+      throw new BadRequestException('Passwords do not match');
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const encryptPassword = { password: hashedPassword };
+
+    const updatedUser = await this.employeemodel.findByIdAndUpdate(
+      id,
+      encryptPassword,
+      { new: true },
+    );
+
+    if (!updatedUser) {
+      throw new NotFoundException(`User with #${id} not found`);
+    }
+
+    return updatedUser;
   }
 
   async deleteEmployee(id: mongoose.Types.ObjectId): Promise<employee> {

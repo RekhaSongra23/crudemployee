@@ -7,7 +7,7 @@ export class employee {
   @Prop({ unique: true })
   username: string;
 
-  @Prop({ unique: true })
+  @Prop()
   password: string;
 
   @Prop({})
