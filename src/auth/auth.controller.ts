@@ -6,7 +6,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { authService } from './auth.service';
-import {  employeeDto } from 'src/employee/employee.dto';
+import { employeeDto } from 'src/employee/employee.dto';
 import { authLoginDto } from './authDto';
 import {
   ApiBearerAuth,
@@ -24,7 +24,7 @@ export class authController {
 
   @ApiOperation({ summary: 'Add employee', description: ' added' })
   @ApiBody({ type: employeeDto, description: 'Enter your data' })
-  @ApiResponse({ status: 201, description: 'You are added Successfully' })
+  @ApiResponse({ status: 201, description: 'You are added suessfully' })
   @ApiResponse({ status: 400, description: 'BAD REQUEST' })
   @Post('signup')
   async register(@Body() employeeDto: employeeDto) {
@@ -41,11 +41,11 @@ export class authController {
     description: 'You will be Logged In',
   })
   @ApiBody({ type: authLoginDto, description: 'Enter your data' })
-  @ApiResponse({ status: 201, description: 'You are login Successfully' })
+  @ApiResponse({ status: 201, description: 'You are login Successfully'})
   @ApiResponse({ status: 400, description: 'BAD REQUEST' })
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   @Post('signin')
-  async signin(    
+  async signin(
     @Body('username') username: string,
     @Body('password') password: string,
   ) {

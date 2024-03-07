@@ -23,8 +23,8 @@ export class authService {
   } 
 
   async createuser(dto: employeeDto) {
-    const { username, password, jobrole, experience, role } = dto;
-    const hashedpassword = await bcrypt.hash(password, 10);
+    const { username, password, jobrole,experience,role } = dto;
+    const hashedpassword = await bcrypt.hash(password,10);
 
     const userdetails = await this.employeemodel.create({
       username,
@@ -34,15 +34,14 @@ export class authService {
       role,
     });
 
-    const payload = { sub: userdetails.id, role: userdetails.role };
+    const payload = { sub: userdetails.id, role:userdetails.role };
     const acessToken = await this.jwtservice.sign(payload, {
       secret: `${process.env.JWT_SECRET}`,
     });
 
-    return { userdetails: userdetails, token: acessToken };
-  }
+    return { userdetails: userdetails,token:acessToken };
+  }  
 
-  
 
   async login(username: string, password: string) {
     const empLogin = await this.findUserName(username);

@@ -31,7 +31,7 @@ import { employeeUpdateDto, updatepassDto } from './employeeUpdateDto';
 @UseGuards(AuthGuard, RoleGuard)
 @UserRoles(UserRole.ADMIN, UserRole.MANAGER)
 @ApiBearerAuth()
-@ApiTags('Employee Retrival and Updation')
+@ApiTags('Employee retrival and updation')
 @Controller('employee')
 export class employeeController {
   constructor(private readonly employeeService: employeeservice) {}
@@ -41,7 +41,7 @@ export class employeeController {
     description: 'You will get All employess',
   })
   @ApiResponse({ status: 200, description: 'Employee Get successfully' })
-  @UserRoles(UserRole.ADMIN, UserRole.MANAGER, UserRole.DEVELOPER)
+  @UserRoles(UserRole.MANAGER,UserRole.ADMIN,UserRole.DEVELOPER)
   @Get()
   async getAllemployee(): Promise<employee[]> {
     const emp2 = await this.employeeService.findEmployee();
@@ -49,12 +49,12 @@ export class employeeController {
   }
 
   @ApiOperation({
-    summary: 'Get Employee by Id',
+    summary: 'Get employee by id',
     description: 'Enter id and get data',
   })
   @ApiParam({ name: 'id', description: 'Employee Id', type: String })
-  @ApiResponse({ status: 200, description: 'Employee is getting sucessfully' })
-  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 200, description: 'Employee is getting successfully' })
+  @ApiResponse({ status: 400, description: 'Bad Request'})
   @Get(':id')
   async getEmployeeById(
     @Param('id') id: mongoose.Types.ObjectId,
@@ -83,7 +83,7 @@ export class employeeController {
   })
   @ApiParam({ name: 'id', description: 'employee id', type: String })
   @ApiBody({ type: employeeDto, description: 'Update data' })
-  @ApiResponse({ status: 200, description: 'Employee is getting sucessfully' })
+  @ApiResponse({ status: 200, description: 'Employee is getting sucessfully'})
   @ApiResponse({ status: 400, description: 'Bad request' })
   // @UserRoles(UserRole.ADMIN, UserRole.MANAGER)
   @Put(':id')
@@ -117,12 +117,12 @@ export class employeeController {
     description: 'You can update your data',
   })
   @ApiParam({ name: 'id', description: 'emp ID', type: String })
-  @ApiBody({ type: employeeUpdateDto, description: 'Update your data' })
+  @ApiBody({ type: employeeUpdateDto, description: 'Update your data'})
   @ApiResponse({
     status: 200,
     description: 'User password is updated successfully',
   })
-  @ApiResponse({ status: 400, description: 'BAD REQUEST' })
+  @ApiResponse({ status: 400, description: 'BAD REQUEST'})
   @Put(':id/password')
   async updateUserPasswordById(
     @Param('id') userId: mongoose.Types.ObjectId,
@@ -144,8 +144,8 @@ export class employeeController {
     description: 'Enter id and delete',
   })
   @ApiParam({ name: 'id', description: 'employee id', type: String })
-  @ApiResponse({ status: 200, description: 'employee is deleting sucessfully'})
-  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 200, description: 'Employee is deleting sucessfully'})
+  @ApiResponse({ status: 400, description: 'Bad Request'})
   // @UserRoles(UserRole.ADMIN)
   @Delete(':id')
   async deleteEmp(
@@ -160,7 +160,7 @@ export class employeeController {
         authenticatedUser.role === UserRole.MANAGER
       ) {
         const emp5 = await this.employeeService.deleteEmployee(id);
-        return { message: `User with this Id: ${id} deleted successfully` };
+        return { message: `User with this Id: ${id} deleted sucessfully`};
       } else {
         throw new ForbiddenException('You are not authorized');
       }

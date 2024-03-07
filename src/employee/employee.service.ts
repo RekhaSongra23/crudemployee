@@ -13,7 +13,7 @@ export class employeeservice {
   ) {}
 
   async findEmployee(): Promise<employee[]> {
-    const empfind = await this.employeemodel.find({}, { password: 0 });
+    const empfind = await this.employeemodel.find({}, {password:0 });
     return empfind;
   }
 
@@ -37,10 +37,10 @@ export class employeeservice {
     id: mongoose.Types.ObjectId,
     updatepassDto: updatepassDto,
   ): Promise<employee> {
-    const { password, confirmPassword } = updatepassDto;
+    const { password,confirmPassword } = updatepassDto;
 
     if (password !== confirmPassword) {
-      throw new BadRequestException('Passwords do not match');
+      throw new BadRequestException('Password do not match');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
