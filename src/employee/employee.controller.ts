@@ -144,7 +144,7 @@ export class employeeController {
     description: 'Enter id and delete',
   })
   @ApiParam({ name: 'id', description: 'employee id', type: String })
-  @ApiResponse({ status: 200, description: 'employee is deleting sucessfully' })
+  @ApiResponse({ status: 200, description: 'employee is deleting sucessfully'})
   @ApiResponse({ status: 400, description: 'Bad Request' })
   // @UserRoles(UserRole.ADMIN)
   @Delete(':id')
